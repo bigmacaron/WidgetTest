@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="110dp"
+    android:minHeight="110dp"
+    android:updatePeriodMillis="86400000"
+    android:previewImage="@drawable/ic_emoji_people"
+    android:initialLayout="@layout/appwidget_layout"
+    android:widgetCategory="home_screen">
+</appwidget-provider>
+<!--    android:configure="kr.kro.fatcats.widgettest.widget.AppWidgetConfigure"-->
+<!--        android:resizeMode="horizontal|vertical"-->
