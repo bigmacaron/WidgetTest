@@ -2,12 +2,14 @@ package kr.kro.fatcats.widgettest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.coroutines.Job
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         const val SHARED_PRES = "prefs"
         const val IMAGE_INDEX = "imageIndex"
+        var changeJob : Job? = null
         val imageList = intArrayOf(
             R.mipmap.im1,R.mipmap.im2,R.mipmap.im3,R.mipmap.im4,R.mipmap.im5,R.mipmap.im6,R.mipmap.im7,R.mipmap.im8,R.mipmap.im9,R.mipmap.im10,R.mipmap.im11,
             R.mipmap.im12,R.mipmap.im13,R.mipmap.im14,R.mipmap.im15,R.mipmap.im16,R.mipmap.im17,R.mipmap.im18,R.mipmap.im19,R.mipmap.im20,R.mipmap.im21,
