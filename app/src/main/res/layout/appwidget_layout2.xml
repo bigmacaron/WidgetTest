@@ -7,10 +7,10 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ivWidgetMain"
+        android:id="@+id/ivWidgetMainPeople"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@mipmap/im1"
+        android:src="@drawable/ic_emoji_people"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

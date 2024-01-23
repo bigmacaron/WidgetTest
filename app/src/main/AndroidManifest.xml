@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -35,9 +36,15 @@
                 android:resource="@xml/appwidget_info" />
         </receiver>
 
+        <receiver android:name=".widget.AppWidgetProviderClass2"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_info2" />
+        </receiver>
 
-        <service android:name=".widget.WidgetServiceClass"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

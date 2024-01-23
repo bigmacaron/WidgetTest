@@ -7,20 +7,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.RemoteViews
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kr.kro.fatcats.widgettest.MainActivity.Companion.IMAGE_INDEX_CAT
+import kr.kro.fatcats.widgettest.MainActivity.Companion.IMAGE_INDEX_PEOPLE
 import kr.kro.fatcats.widgettest.MainActivity.Companion.SHARED_PRES
-import kr.kro.fatcats.widgettest.MainActivity.Companion.changeJob
-import kr.kro.fatcats.widgettest.MainActivity.Companion.imageListCat
+import kr.kro.fatcats.widgettest.MainActivity.Companion.imageListPeople
 import kr.kro.fatcats.widgettest.R
 
 
-class AppWidgetProviderClass : AppWidgetProvider() {
+class AppWidgetProviderClass2 : AppWidgetProvider() {
 
     private val myOnClick1 = "myOnClickTag1"
     private val myOnClick2 = "myOnClickTag2"
@@ -29,33 +23,19 @@ class AppWidgetProviderClass : AppWidgetProvider() {
     // 또한 앱 위젯이 추가 될 떄에도 호출 되므로 Service 와의 상호작용 등의 초기 설정이 필요 할 경우에도 이 메소드를 통해 구현합니다
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
-            val views = RemoteViews(context.packageName, R.layout.appwidget_layout)
+            val views = RemoteViews(context.packageName, R.layout.appwidget_layout2)
 
-            val intent = Intent(context, AppWidgetProviderClass::class.java)
+            val intent = Intent(context, AppWidgetProviderClass2::class.java)
             intent.action = myOnClick1
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
             val pendingIntent = PendingIntent.getBroadcast(
                 context,
-                0, intent, PendingIntent.FLAG_IMMUTABLE
+                100, intent, PendingIntent.FLAG_IMMUTABLE
             )
-
             views.setOnClickPendingIntent(
-                R.id.ivWidgetMain,
+                R.id.ivWidgetMainPeople,
                 pendingIntent
             )
-//            val intent2 = Intent(context, AppWidgetProviderClass::class.java)
-//            intent2.action = myOnClick2
-//            intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
-//            val pendingIntent2 = PendingIntent.getBroadcast(
-//                context,
-//                1, intent2, PendingIntent.FLAG_IMMUTABLE
-//            )
-//
-//            views.setOnClickPendingIntent(
-//                R.id.ivWidgetSub,
-//                pendingIntent2
-//            )
-
             appWidgetManager.updateAppWidget(appWidgetIds, views)
         }
     }
@@ -63,40 +43,30 @@ class AppWidgetProviderClass : AppWidgetProvider() {
     // 앱의 브로드캐스트를 수신하며 해당 메서드를 통해 각 브로드캐스트에 맞게 메서드를 호출한다.
     override fun onReceive(context: Context, intent: Intent) {
         if (myOnClick1 == intent.action) {
-            if(changeJob == null){
-                playImage(context)
-            }else{
-                changeJob?.cancel()
-                changeJob = null
-            }
+            nextImage(context)
         }
-
         super.onReceive(context, intent)
     }
 
-    private fun playImage(context: Context){
-        changeJob = CoroutineScope(Dispatchers.Main).launch {
-            Log.e("TAG", "onReceive: ${changeJob.hashCode()}", )
-            repeat(500){
-                val prefs = context.getSharedPreferences(SHARED_PRES,Context.MODE_PRIVATE)
-                val imageIndex = prefs?.getInt(IMAGE_INDEX_CAT,0)?:0
-                var index = 0
+    private fun nextImage(context: Context){
 
-                if(imageIndex != imageListCat.size - 1) index = imageIndex + 1
-                val views = RemoteViews(
-                    context.packageName,
-                    R.layout.appwidget_layout
-                )
-                views.setImageViewResource(R.id.ivWidgetMain, imageListCat[index])
-                AppWidgetManager.getInstance(context).updateAppWidget(
-                    ComponentName(context, AppWidgetProviderClass::class.java), views
-                )
-                val editor = prefs.edit()
-                editor.putInt(IMAGE_INDEX_CAT, index)
-                editor.apply()
-                delay(16)
-            }
-        }
+            val prefs = context.getSharedPreferences(SHARED_PRES,Context.MODE_PRIVATE)
+            val imageIndex = prefs?.getInt(IMAGE_INDEX_PEOPLE,0)?:0
+            var index = 0
+
+            if(imageIndex != imageListPeople.size - 1) index = imageIndex + 1
+            val views = RemoteViews(
+                context.packageName,
+                R.layout.appwidget_layout2
+            )
+            views.setImageViewResource(R.id.ivWidgetMainPeople, imageListPeople[index])
+            AppWidgetManager.getInstance(context).updateAppWidget(
+                ComponentName(context, AppWidgetProviderClass2::class.java), views
+            )
+            val editor = prefs.edit()
+            editor.putInt(IMAGE_INDEX_PEOPLE, index)
+            editor.apply()
+
     }
 
     // 앱 위젯은 여러개가 등록 될 수 있는데, 최초의 앱 위젯이 등록 될 때 호출 됩니다. (각 앱 위젯 인스턴스가 등록 될때마다 호출 되는 것이 아님)
